@@ -1,3 +1,3 @@
-Hi, my name is Natalija
+Hello from starter.txt file
 
  Nice to meet you
