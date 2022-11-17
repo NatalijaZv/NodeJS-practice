@@ -1,0 +1,8 @@
+20221115	05:21:08/tc3f0eaac-d313-43fc-915b-ec925e4a1d49	TypeError: fsPromises.readFil is not a function
+20221117	15:02:31/t6c5c57e3-b26e-48b9-99cd-9aa5c439f31e	Error:Not allowed by CORS
+20221117	17:50:55/t13e05b9a-c3b5-4787-86e5-681d2e368dd2	Error:Not allowed by CORS
+20221117	17:50:55/t923f826d-ffdc-4490-8061-e776ab9736f0	Error:Not allowed by CORS
+20221117	17:51:15/te56814b5-e5b7-459d-b1d3-df47033253e1	Error:Not allowed by CORS
+20221117	17:51:15/ta31b3f75-161d-42cd-999c-98534104366c	Error:Not allowed by CORS
+20221117	21:30:45/t332a3e9f-d2ae-4bd2-ba5b-e1f7d8cda1e8	Error:ENOENT: no such file or directory, stat 'D:\Natalija\GitHub\NodeJS-practice\08_TUT\views\subdir\test.html'
+20221117	21:31:19/t30822129-5dd7-4ac9-b45d-9b55ae3de71b	Error:ENOENT: no such file or directory, stat 'D:\Natalija\GitHub\NodeJS-practice\08_TUT\views\subdir\test.html'
