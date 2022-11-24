@@ -1,0 +1,12 @@
+user autorization requires two routes:
+    - registration route to register an new user account
+    - autorization route to autorize the user after we create an account
+
+bcrypt - to securely save password in our db
+
+1. in the controller folder, we create new controller registerController with the logic for adding new user in our db
+2. we need to add new file in routes folder - register.js with post route
+3. we need to add new route with other routes in server.js
+
+when we are done with authentication we need to handle the authorization
+1. in controller we create 
