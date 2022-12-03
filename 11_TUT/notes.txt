@@ -1,0 +1,87 @@
+JWT     - JSON Web Tokens
+JWTs can be considered to be a form of user identification that is issued after the initial user authentication takes place 
+- when user completes their login process and they are authenticated our rest api will issue the client application an access token
+ and a refresh token. The access token is given a short time  before it expires (for example 5-15 min) and the refresh token is given 
+ a longer duration before it expires possibly, several hours, days...
+
+ Hazards: 
+ - XSS Cross-Site Scripting
+ -CSRF: CS Request Forgery
+
+ Our API will send and receive access tokens as json data to avoid the previously mentioned risks. it is recommended for front-end client 
+ applications to only store access tokens in memory, so they will be automatically lost when the app is closed. They should not be stored in 
+ local storage or in a cookie. Essentially if you can store it somewhere with javascript a hacker can also retrieve it with javascript.
+  Keep access tokens in memory which you might also refer to as the current application state. Our API will issue refresh tokens in an http only cookie. 
+  This type of cookie is not accessible with JS. 
+  Refresh tokens needs to have expiration, which will then require users to login again. 
+  Overall access token process involves issuing an access token during user user authorization. The users app can then access our rest 
+  apis protected routese with the access token until it expires. Our API will verify the access token with middleware every time the access
+  token is used to make a request. when the access token does expire the users app will need to send their refresh token to our APIs refresh 
+  endpoint to get a new access token. The refresh token also expires, so indefinite access cannot be gained
+  1. Installamo dotenv jsonwebtoken cookie-parser: npm i dotenv jsonwebtoken cookie-parser
+  2. CREATAMO .env (env - environment variables)
+    - kjer bomo nastavili vrednosti ACCESS_TOKEN_SECRET in REFRESH_TOKEN_SECRET
+    - v terminal prvo vpišemo: node
+    - nato pa: require("crypto").randomBytes(64).toString("hex")      -this will give us a random crypto bytes string that we can use
+    as our access token secret  -> ta random string potem kopiramo in ga prilepimo v .env
+
+    3. we need to add our .env file in gitignore
+
+    4. we need to add JWT in our authController.js 
+        - creatamo jwt :  const jwt = require("jsonwebtoken");
+        - require("dotenv").config();
+        - const fsPromises = require("fs").promises;
+        - const path = require("path");const 
+
+        - once we authorize the login we need to create JWT (if password matches) :
+            1. define our access token:  const accessToken = jwt.sign()  (in sing(), we need to pase username object, 
+                                                                        we dont want to pass password!) AND our secret, and on the end we  add     
+                                                                         option value {expiresIn: "30s"}
+            2. define our refresh token: const refreshToken = jwt.sign(
+                                        { username: foundUser.username },
+                                        process.env.REFRESH_TOKEN_SECRET,
+                                        { expiresIn: "1d" }   - refresh token lasts longer than access
+                                        );
+            3. save refresh token with current user in DB
+            when we create both tokens we want to save our refresh token in DB, which will allow us to create our logout route
+            4. we need to send both access and refresh token to the user - we can send it in res.json(accessToken) -easy part - but its
+                                                                        problem, because we need to store it somewhere(for example in memory ), 
+                                                                        its not secure in local storage and any cookie that you can acces 
+                                                                        with JS. So we are going to send it as a cookie, which we are going
+                                                                      to set as HTTP only - then its not avalible to JS and its less vunerable
+                                                                      res.cookie("jwt",refreshToken,{httpOnly:true,maxAge:24*60*60*1000})
+                                                                      first we write "jwt", then our refresToken, and last are options - 
+                                                                      set httpOnly to true
+
+    5. we need to verify JWT token -> we create new middleware file verifyJWT.js
+    6. now we can import a verifyJWT in routes - api - employees, to protect the routes with JWT token : example 
+             .get(verifyJWT, employeesController.getAllEmpoyees)  -  all get request to /employees endpoint is protected with JWT token
+              we can use it also in server.js   -> 
+                        app.use("/",require("./routes/root"))
+                        app.use("/register", require("./routes/register"))
+                        app.use("/auth", require("./routes/auth"))
+                        app.use(verifyJWT)                    - everything below this line is protected with JWT
+                        app.use("/employees",require("./routes/api/employees"))
+
+  7. we also need to apply middleware for cookies with cookie parser in server.js
+        - we import cookie parser in server.js : const cookieParser = require("cookie-parser")
+        - we put it after applaying middleware for json :    app.use(cookieParser())
+
+  8. then we will create a new route called refresh.js
+  9. we need to insert refresh route in server.js with others routes - before we verify JWT
+
+  10. we need to create also logOut route - we can actually then delete the refresh token, before their duration and access token in the frontend
+
+ 
+ !! If we use fetch in front end to fetch out data, we need to include Credentials!
+  EXAMPLE in frontend: 
+  const response  = await fetch("http://localhost:3500/auth",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    credentials:"include",      => if we include credentials, then we get cors err (Access-Control-Allow-Credentials is "") -> we need to fix that
+    body: JSON.stringify({user,pwd})
+  })
+
+
+        1.  we need to make new file allowedOrigins.js in config folder and put our existing whitelist in - then we exporte module and use it in cors options
+       2. we need new file in middleware - credentials.js
