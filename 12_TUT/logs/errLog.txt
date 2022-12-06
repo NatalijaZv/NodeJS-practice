@@ -1,0 +1,15 @@
+20221115	05:21:08/tc3f0eaac-d313-43fc-915b-ec925e4a1d49	TypeError: fsPromises.readFil is not a function
+20221117	15:02:31/t6c5c57e3-b26e-48b9-99cd-9aa5c439f31e	Error:Not allowed by CORS
+20221117	17:50:55/t13e05b9a-c3b5-4787-86e5-681d2e368dd2	Error:Not allowed by CORS
+20221117	17:50:55/t923f826d-ffdc-4490-8061-e776ab9736f0	Error:Not allowed by CORS
+20221117	17:51:15/te56814b5-e5b7-459d-b1d3-df47033253e1	Error:Not allowed by CORS
+20221117	17:51:15/ta31b3f75-161d-42cd-999c-98534104366c	Error:Not allowed by CORS
+20221117	21:30:45/t332a3e9f-d2ae-4bd2-ba5b-e1f7d8cda1e8	Error:ENOENT: no such file or directory, stat 'D:\Natalija\GitHub\NodeJS-practice\08_TUT\views\subdir\test.html'
+20221117	21:31:19/t30822129-5dd7-4ac9-b45d-9b55ae3de71b	Error:ENOENT: no such file or directory, stat 'D:\Natalija\GitHub\NodeJS-practice\08_TUT\views\subdir\test.html'
+20221122	21:13:38/t4e909864-35cc-445e-ad03-0b45b6ee8117	TypeError:Cannot read properties of undefined (reading 'id')
+20221122	21:14:04/t2f5b4a67-3d37-4483-a510-a6102f39d191	TypeError:Cannot read properties of undefined (reading 'id')
+20221122	21:15:56/t8e21f359-3f54-4b03-b4bf-accaedf3fc34	TypeError:Cannot read properties of undefined (reading 'id')
+20221122	21:19:51/tcceaba8b-5f01-47d6-92c4-4af9f7cab833	TypeError:Cannot read properties of undefined (reading 'id')
+20221123	22:13:22/t356bced4-0458-4c3a-8525-94faefa43e51	SyntaxError:Unexpected token } in JSON at position 44
+20221123	22:13:39/t2424a34a-be41-4d7d-9604-8e71bcf6fe65	SyntaxError:Unexpected token } in JSON at position 39
+20221202	15:25:39/t380970ef-8487-460b-8325-f801cf75d157	ReferenceError:pocess is not defined

@@ -1,0 +1,10 @@
+USER ROLES
+
+Authorization
+- is the process of verifying what resources a user has access to 
+
+Authentication
+- is the process of verifying who someone is
+
+When we log in  with the username and password we are verifying who we are   - that is Authentication
+After loggin in our Express api issues users jwt tokens. 
