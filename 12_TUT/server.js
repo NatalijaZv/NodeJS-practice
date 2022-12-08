@@ -1,3 +1,4 @@
+require("dotenv").config()
 const exp = require("constants");
 const express = require("express");
 const app = express();
@@ -6,11 +7,18 @@ const cors = require("cors")
 const corsOptions = require("./config/corsOptions")
 const {logger} = require("./middleware/logEvents")
 const errorHandler = require("./middleware/errorHandler")
-const PORT = process.env.PORT || 3500;
+
 const verifyJWT = require("./middleware/verifyJWT")
 const cookieParser = require("cookie-parser");
 const credentials = require("./middleware/credentials")
 const { allowedNodeEnvironmentFlags } = require("process");
+const mongoose = require("mongoose")
+const connectDB = require("./config/dbConn")
+const PORT = process.env.PORT || 3500;
+
+//Connect to MongoDB
+connectDB()
+
 //CUSTOM MIDDLEWARE LOGGER
 app.use(logger)
 
@@ -60,7 +68,11 @@ app.all("*", (req, res) => {
 });
 //costum error handling
 app.use(errorHandler)
-
-app.listen(PORT, () => {
-  console.log(`Server runnin on post ${PORT}`);
-});
+//We donst want to listen to events, if we are not connected to MongoDB, thats why we need
+//to check first if we are connected to db. - on mongoose documentation, there are connection events, we want to listen for connection 
+mongoose.connection.once("open", ()=>{
+  console.log("Connected to MondoDB")
+  app.listen(PORT, () => {
+    console.log(`Server runnin on post ${PORT}`);
+  });
+})

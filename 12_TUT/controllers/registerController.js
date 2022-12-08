@@ -1,12 +1,4 @@
-const usersDB = {
-  users: require("../model/users.json"),
-  setUsers: function (data) {
-    this.users = data;
-  },
-};
-
-const fsPromises = require("fs").promises;
-const path = require("path");
+const User = require("../model/User")
 const bcrypt = require("bcrypt");
 
 const handleNewUser = async (req, res) => {
@@ -17,8 +9,9 @@ const handleNewUser = async (req, res) => {
       .status(400)
       .json({ message: "Username and password are required" });
   }
-  //check for duplicate username in the db (in our example we uses our .json file to simulate db)
-  const duplicate = usersDB.users.find((person) => person.username === user);
+  //check for duplicate username in the db in our mongoDB
+  // we need to get duplicate from out User module
+  const duplicate = await User.findOne({username:user}).exec()    //we need to call .exec -> because we use async and await 
   if (duplicate) {
     return res.sendStatus(409); //HTTP status code 409 stands for CONFLICT
   }
@@ -26,19 +19,20 @@ const handleNewUser = async (req, res) => {
   try {
     //ENCRYPT PASSWORD USING bcrypt
     const hashedPwd = await bcrypt.hash(pwd, 10);
-    //store the new user
-    const newUser = {
+    //create and store the new user
+    //1.varianta (najhitrejša)
+    const result = await User.create({
       "username": user,
-      "roles":{"User":2001},
-      "password": hashedPwd,
+      "password": hashedPwd
+    });
+    //2.varianta
+    // const newUser = new User({
+    //   "username": user,
+    //   "password": hashedPwd
+    // }) 
+    // const result = await newUser.save()
+ console.log(result)
 
-    };
-    usersDB.setUsers([...usersDB.users, newUser]);
-    await fsPromises.writeFile(
-      path.join(__dirname, "..", "model", "users.json"),
-      JSON.stringify(usersDB.users)
-    );
-    console.log(usersDB.users)
     res.status(201).json({"success":`New user ${user} created`})
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -1,10 +1,36 @@
-USER ROLES
+1. we need to set up put database on mongoDB website
+2. we need to install mongoose : npm i mongoose             mongoose is a library, that makes working with mongo easily
+    about mongoose: https://mongoosejs.com/docs/guide.html
+    in this tutorial we will be working around connections 
 
-Authorization
-- is the process of verifying what resources a user has access to 
+3. in .env need to create connnection string : primer: DATABASE_URI=mongodb+srv://mongotut:krneki123@cluster0.hskekxl.mongodb.net/CompanyDB?retryWrites=true&w=majority
+                                                        DATABASE_URI=mongodb+srv://mongotut:"ourpassword"@cluster0.hskekxl.mongodb.net/ourDBname?retryWrites=true&w=majority
 
-Authentication
-- is the process of verifying who someone is
 
-When we log in  with the username and password we are verifying who we are   - that is Authentication
-After loggin in our Express api issues users jwt tokens. 
+4. we need to require mongoose in server.js
+5. in config folder we create new file - dbConn
+6. we need to connect our app with mongoDB in dbConn : 
+                const connectDB = async () => {
+                try {
+                    await mongoose.connect(process.env.DATABASE_URI, {
+                    useUnifiedTopology: true,
+                    useNewUrlParser: true,
+                    });
+                } catch (err) {
+                    console.log(err);
+                }
+                };
+
+
+7. we need to require connectDB in server.js and connect our server.js with DB : connectDB()
+8. //We donst want to listen to events, if we are not connected to MongoDB, thats why we need
+//to check first if we are connected to db. - on mongoose documentation, there are connection events, we want to listen for connection 
+        mongoose.connection.once("open", ()=>{
+        console.log("Connected to MondoDB")
+        app.listen(PORT, () => {
+            console.log(`Server runnin on post ${PORT}`);
+        });
+        })
+
+9. Then we create Employee and user schema in model folder https://mongoosejs.com/docs/models.html and create and export associated models with our schemas
+10. Then we need to implement user schema and model in register controller
